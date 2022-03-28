@@ -3,15 +3,15 @@ let Background = [];
 let OverTheMouse = new AqNH3Solution();
 let AbsorptionChiller = {
     Condenser: {
-        Presion:{
+        Pressure:{
             Value:0,
             Screen:0
         },
-        Temperatura:{
+        Temperature:{
             Value:0,
             Screen:0
         },
-        Composicion:{
+        Composition:{
             Molar:0,
             Weight:0
         },
@@ -24,15 +24,15 @@ let AbsorptionChiller = {
         }
     },
     Generator:{
-        Presion:{
+        Pressure:{
             Value:0,
             Screen:0
         },
-        Temperatura:{
+        Temperature:{
             Value:0,
             Screen:0
         },
-        Composicion:{
+        Composition:{
             Molar:0,
             Weight:0
         },
@@ -45,15 +45,15 @@ let AbsorptionChiller = {
         }
     },
     GeneratorInput:{
-        Presion:{
+        Pressure:{
             Value:0,
             Screen:0
         },
-        Temperatura:{
+        Temperature:{
             Value:0,
             Screen:0
         },
-        Composicion:{
+        Composition:{
             Molar:0,
             Weight:0
         },
@@ -66,15 +66,15 @@ let AbsorptionChiller = {
         }
     },
     Evaporator:{
-        Presion:{
+        Pressure:{
             Value:0,
             Screen:0
         },
-        Temperatura:{
+        Temperature:{
             Value:0,
             Screen:0
         },
-        Composicion:{
+        Composition:{
             Molar:0,
             Weight:0
         },
@@ -87,15 +87,15 @@ let AbsorptionChiller = {
         }
     },
     Absorber:{
-        Presion:{
+        Pressure:{
             Value:0,
             Screen:0
         },
-        Temperatura:{
+        Temperature:{
             Value:0,
             Screen:0
         },
-        Composicion:{
+        Composition:{
             Molar:0,
             Weight:0
         },
@@ -108,15 +108,15 @@ let AbsorptionChiller = {
         }
     },
     AbsorberInput:{
-        Presion:{
+        Pressure:{
             Value:0,
             Screen:0
         },
-        Temperatura:{
+        Temperature:{
             Value:0,
             Screen:0
         },
-        Composicion:{
+        Composition:{
             Molar:0,
             Weight:0
         },
@@ -142,9 +142,9 @@ let Screen = {
     pressMaxSP: 9,      //kPa
     pressVelMax: 0.1,
     tempMin: 0,          //°C
-    tempMax: 90,        //°C
+    tempMax: 40,        //°C
     tempMinSP: 0,        //°C
-    tempMaxSP: 90,      //°C
+    tempMaxSP: 40,      //°C
     tempVelMax: 0.3,
     SelectedHumidity: 0
 }
@@ -159,40 +159,43 @@ function draw(){
     image(Background[0], 0, 0);
     MoveToTheRequestedRange();
     UpdateAbsorptionChiller();
-    DrawSaturationLine();
     DrawIsoConcentrationsLines();
     // Draw The Operation Lines
-    push();
-        stroke(0,0,255);
-        strokeWeight((AbsorptionChiller.GeneratorInput.Circle.Size + AbsorptionChiller.Condenser.Circle.Size)*0.25);
-        line(AbsorptionChiller.GeneratorInput.Circle.X,AbsorptionChiller.GeneratorInput.Circle.Y,AbsorptionChiller.Condenser.Circle.X,AbsorptionChiller.Condenser.Circle.Y);
-        line(AbsorptionChiller.Evaporator.Circle.X,AbsorptionChiller.Evaporator.Circle.Y,AbsorptionChiller.Absorber.Circle.X,AbsorptionChiller.Absorber.Circle.Y);
-        DrawConcentrationsLine(AbsorptionChiller.Evaporator.Composicion, AbsorptionChiller.Evaporator.Temperatura,AbsorptionChiller.Condenser.Temperatura);
-    pop();
-    push();
-        stroke(0,255,0);
-        strokeWeight((AbsorptionChiller.GeneratorInput.Circle.Size + AbsorptionChiller.Generator.Circle.Size)*0.25);
-        DrawConcentrationsLine(AbsorptionChiller.GeneratorInput.Composicion, AbsorptionChiller.Absorber.Temperatura, AbsorptionChiller.GeneratorInput.Temperatura);
-    pop();
-    push();
-        stroke(255,0,0);
-        strokeWeight((AbsorptionChiller.GeneratorInput.Circle.Size + AbsorptionChiller.Generator.Circle.Size)*0.25);
-        line(AbsorptionChiller.GeneratorInput.Circle.X,AbsorptionChiller.GeneratorInput.Circle.Y,AbsorptionChiller.Generator.Circle.X,AbsorptionChiller.Generator.Circle.Y);
-        line(AbsorptionChiller.AbsorberInput.Circle.X,AbsorptionChiller.AbsorberInput.Circle.Y,AbsorptionChiller.Absorber.Circle.X,AbsorptionChiller.Absorber.Circle.Y);
-        DrawConcentrationsLine(AbsorptionChiller.AbsorberInput.Composicion, AbsorptionChiller.AbsorberInput.Temperatura, AbsorptionChiller.Generator.Temperatura);
-    pop();
+    // push();
+    //     stroke(0,0,255);
+    //     strokeWeight((AbsorptionChiller.GeneratorInput.Circle.Size + AbsorptionChiller.Condenser.Circle.Size)*0.25);
+    //     line(AbsorptionChiller.GeneratorInput.Circle.X,AbsorptionChiller.GeneratorInput.Circle.Y,AbsorptionChiller.Condenser.Circle.X,AbsorptionChiller.Condenser.Circle.Y);
+    //     line(AbsorptionChiller.Evaporator.Circle.X,AbsorptionChiller.Evaporator.Circle.Y,AbsorptionChiller.Absorber.Circle.X,AbsorptionChiller.Absorber.Circle.Y);
+    //     DrawConcentrationsLine(AbsorptionChiller.Evaporator.Composition[0], AbsorptionChiller.Evaporator.Temperature.Value,AbsorptionChiller.Condenser.Temperature.Value);
+    // pop();
+    // push();
+    //     stroke(0,255,0);
+    //     strokeWeight((AbsorptionChiller.GeneratorInput.Circle.Size + AbsorptionChiller.Generator.Circle.Size)*0.25);
+    //     DrawConcentrationsLine(AbsorptionChiller.GeneratorInput.Composition[0], AbsorptionChiller.Absorber.Temperature.Value, AbsorptionChiller.GeneratorInput.Temperature.Value);
+    // pop();
+    // push();
+    //     stroke(255,0,0);
+    //     strokeWeight((AbsorptionChiller.GeneratorInput.Circle.Size + AbsorptionChiller.Generator.Circle.Size)*0.25);
+    //     line(AbsorptionChiller.GeneratorInput.Circle.X,AbsorptionChiller.GeneratorInput.Circle.Y,AbsorptionChiller.Generator.Circle.X,AbsorptionChiller.Generator.Circle.Y);
+    //     line(AbsorptionChiller.AbsorberInput.Circle.X,AbsorptionChiller.AbsorberInput.Circle.Y,AbsorptionChiller.Absorber.Circle.X,AbsorptionChiller.Absorber.Circle.Y);
+    //     DrawConcentrationsLine(AbsorptionChiller.AbsorberInput.Composition[0], AbsorptionChiller.AbsorberInput.Temperature.Value, AbsorptionChiller.Generator.Temperature.Value);
+    // pop();
     // Draw the Equipment Points
-    DrawTheBeatingCircle(AbsorptionChiller.Absorber.Circle, 10);
-    DrawTheBeatingCircle(AbsorptionChiller.Evaporator.Circle, 10);
-    DrawTheBeatingCircle(AbsorptionChiller.Generator.Circle, 10);
-    DrawTheBeatingCircle(AbsorptionChiller.Condenser.Circle, 10);
-    DrawTheBeatingCircle(AbsorptionChiller.GeneratorInput.Circle, 10);
-    DrawTheBeatingCircle(AbsorptionChiller.AbsorberInput.Circle, 10);
+    // DrawTheBeatingCircle(AbsorptionChiller.Absorber.Circle, 10);
+    // DrawTheBeatingCircle(AbsorptionChiller.Evaporator.Circle, 10);
+    // DrawTheBeatingCircle(AbsorptionChiller.Generator.Circle, 10);
+    // DrawTheBeatingCircle(AbsorptionChiller.Condenser.Circle, 10);
+    // DrawTheBeatingCircle(AbsorptionChiller.GeneratorInput.Circle, 10);
+    // DrawTheBeatingCircle(AbsorptionChiller.AbsorberInput.Circle, 10);
     // Calculate Properties over the mouse.
     OverTheMouse.Temperature = map(mouseX, Screen.Xmin, Screen.Xmax, Screen.tempMin, Screen.tempMax);
     OverTheMouse.Pressure = map(mouseY, Screen.Ymax, Screen.Ymin, Screen.pressMin, Screen.pressMax);
-    OverTheMouse.VaporPressure = AqNH3.VaporPressure(OverTheMouse.Temperature, OverTheMouse.Concentration);
-    OverTheMouse.Enthalpy = AqNH3.Enthalpy(OverTheMouse.Temperature, OverTheMouse.Concentration);
+    OverTheMouse.MolalConcentration = AqNH3.ConcentrationAtSaturation(OverTheMouse.Temperature, OverTheMouse.Pressure);
+    OverTheMouse.VaporPressure = AqNH3.VaporPressure(OverTheMouse.Temperature, OverTheMouse.MolalConcentration);
+    OverTheMouse.WaterVaporPressure = AqNH3.WaterVaporPressure(OverTheMouse.Temperature, OverTheMouse.MolalConcentration);
+    OverTheMouse.AmmoniaVaporPressure = AqNH3.AmmoniaVaporPressure(OverTheMouse.Temperature, OverTheMouse.MolalConcentration);
+    OverTheMouse.YComposition = AqNH3.GasComposition(OverTheMouse.Temperature, OverTheMouse.MolalConcentration);
+    OverTheMouse.Enthalpy = AqNH3.Enthalpy(OverTheMouse.Temperature, OverTheMouse.MolalConcentration);
     // Write Properties over the mouse.
     aux = 115;
     text('Temperature: ' + (OverTheMouse.Temperature).toFixed(1) + ' °C', 10, aux);
@@ -201,33 +204,20 @@ function draw(){
     aux += 20;
     text('Vapor Pressure: ' + (OverTheMouse.VaporPressure).toFixed(3) + ' kPa', 10, aux);
     aux += 20;
-    text('Concentration: ' + OverTheMouse.Concentration.toFixed(3) + ' %', 10, aux);
+    text('Vapor Pressure of Water: ' + (OverTheMouse.WaterVaporPressure).toFixed(3) + ' kPa', 10, aux);
     aux += 20;
-    text('Enthalpy: ' + (OverTheMouse.Enthalpy).toFixed(2) + ' kJ/kg', 10, aux);
+    text('Vapor Pressure of Ammonia: ' + (OverTheMouse.AmmoniaVaporPressure).toFixed(3) + ' kPa', 10, aux);
+    aux += 20;
+    text('Gas Composition: ' + (OverTheMouse.YComposition.Water).toFixed(1) + ' % Water and ' + (OverTheMouse.YComposition.Ammonia).toFixed(1) + ' % of Ammonia', 10, aux);
+    aux += 20;
+    text('Concentration: ' + OverTheMouse.MolalConcentration.toFixed(3) + ' %', 10, aux);
     UploadTheInputs();
-    function DrawSaturationLine(){
-        push();
-        stroke('red');
-        strokeWeight(4);
-        ResolutionOfDraw = AqNH3.TemperaturesDB.length - 1;
-        Old = {
-            Temperature: Screen.tempMin,
-            Pressure: 0,
-            TemperatureScreen: Screen.Xmin,
-            PressureScreen: Screen.Ymax,
-        };
-        New = {
-            TemperatureScreen: Screen.Xmin,
-            PressureScreen: Screen.Ymax,
-        };
-        pop();    
-    }
     function DrawIsoConcentrationsLines(){
-        for (let Concentration = 0; Concentration < 71; Concentration+=10) {
-            DrawConcentrationsLine(Concentration, Screen.tempMin, Screen.tempMax);
+        for (let MolalConcentration = 0; MolalConcentration < 80; MolalConcentration+=10) {
+            DrawConcentrationsLine(MolalConcentration, Screen.tempMin, Screen.tempMax);
         }
     }
-    function DrawConcentrationsLine(Concentration ,TMin, TMax){
+    function DrawConcentrationsLine(MolalConcentration ,TMin, TMax){
         let ResolutionOfDraw = 80;
         let TemperatureSteps = (TMax - TMin) / ResolutionOfDraw;
         let Old = {
@@ -241,7 +231,7 @@ function draw(){
             PressureScreen: 0,
         };
         Old.Temperature = TMin;
-        Old.Pressure = AqNH3.VaporPressure(Old.Temperature, Concentration);
+        Old.Pressure = AqNH3.VaporPressure(Old.Temperature, MolalConcentration);
         Old.TemperatureScreen = map(Old.Temperature, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax);
         Old.PressureScreen = map(Old.Pressure, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin, true);
         New.TemperatureScreen = Old.TemperatureScreen;
@@ -253,7 +243,7 @@ function draw(){
             New.TemperatureScreen = Old.TemperatureScreen;
             New.PressureScreen = Old.PressureScreen;
             Old.Temperature += TemperatureSteps;
-            Old.Pressure = AqNH3.VaporPressure(Old.Temperature, Concentration);
+            Old.Pressure = AqNH3.VaporPressure(Old.Temperature, MolalConcentration);
         }
     }
     function DrawTheBeatingCircle(Circle, RelativeSaturation){
@@ -343,39 +333,41 @@ function FrommmHgtokPa(PAsmmHg){
     return PAsmmHg * 0.13331555792561;
 }
 function UpdateAbsorptionChiller(){
-    AbsorptionChiller.Condenser.Presion = 30;
-    AbsorptionChiller.Condenser.Composicion = 0;
-    AbsorptionChiller.Condenser.Temperatura = AqNH3.VaporTemperature(AbsorptionChiller.Condenser.Presion, AbsorptionChiller.Condenser.Composicion);
-    AbsorptionChiller.Condenser.SaturacionRelativa = 0;
-    AbsorptionChiller.Condenser.Circle.Y = map(AbsorptionChiller.Condenser.Presion, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
-    AbsorptionChiller.Condenser.Circle.X = map(AbsorptionChiller.Condenser.Temperatura, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
+    AbsorptionChiller.Condenser.Pressure.Value = 30;
+    AbsorptionChiller.Condenser.Composition[0] = 0;
+    AbsorptionChiller.Condenser.Composition[1] = 1 - AbsorptionChiller.Condenser.Composition[0];
+    AbsorptionChiller.Condenser.Temperature.Value = AqNH3.VaporTemperature(AbsorptionChiller.Condenser.Pressure.Value, AbsorptionChiller.Condenser.Composition[0]);
+    AbsorptionChiller.Condenser.Circle.Y = map(AbsorptionChiller.Condenser.Pressure.Value, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
+    AbsorptionChiller.Condenser.Circle.X = map(AbsorptionChiller.Condenser.Temperature.Value, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
 
-    AbsorptionChiller.Generator.Presion = 16;
-    AbsorptionChiller.Generator.Temperatura = FromFtoC(30);
-    AbsorptionChiller.Generator.Circle.Y = map(AbsorptionChiller.Generator.Presion, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
-    AbsorptionChiller.Generator.Circle.X = map(AbsorptionChiller.Generator.Temperatura, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
+    AbsorptionChiller.Generator.Pressure.Value = 16;
+    AbsorptionChiller.Generator.Temperature.Value = FromFtoC(30);
+    AbsorptionChiller.Generator.Circle.Y = map(AbsorptionChiller.Generator.Pressure.Value, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
+    AbsorptionChiller.Generator.Circle.X = map(AbsorptionChiller.Generator.Temperature.Value, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
 
-    AbsorptionChiller.Evaporator.Temperatura = 0;
-    AbsorptionChiller.Evaporator.Composicion = 0;
-    AbsorptionChiller.Evaporator.Presion = AqNH3.VaporPressure(AbsorptionChiller.Evaporator.Temperatura, AbsorptionChiller.Evaporator.Composicion);
-    AbsorptionChiller.Evaporator.SaturacionRelativa = 0;
-    AbsorptionChiller.Evaporator.Circle.Y = map(AbsorptionChiller.Evaporator.Presion, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
-    AbsorptionChiller.Evaporator.Circle.X = map(AbsorptionChiller.Evaporator.Temperatura, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
+    AbsorptionChiller.Evaporator.Temperature.Value = 0;
+    AbsorptionChiller.Evaporator.Composition[0] = 0;
+    AbsorptionChiller.Evaporator.Composition[1] = 1 - AbsorptionChiller.Evaporator.Composition[0];
+    AbsorptionChiller.Evaporator.Pressure.Value = AqNH3.VaporPressure(AbsorptionChiller.Evaporator.Temperature.Value, AbsorptionChiller.Evaporator.Composition[0]);
+    AbsorptionChiller.Evaporator.Circle.Y = map(AbsorptionChiller.Evaporator.Pressure.Value, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
+    AbsorptionChiller.Evaporator.Circle.X = map(AbsorptionChiller.Evaporator.Temperature.Value, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
 
-    AbsorptionChiller.Absorber.Temperatura = 30;
-    AbsorptionChiller.Absorber.Presion = AbsorptionChiller.Evaporator.Presion;
-    AbsorptionChiller.Absorber.Circle.Y = map(AbsorptionChiller.Absorber.Presion, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
-    AbsorptionChiller.Absorber.Circle.X = map(AbsorptionChiller.Absorber.Temperatura, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
+    AbsorptionChiller.Absorber.Temperature.Value = 30;
+    AbsorptionChiller.Absorber.Pressure.Value = AbsorptionChiller.Evaporator.Pressure.Value;
+    AbsorptionChiller.Absorber.Circle.Y = map(AbsorptionChiller.Absorber.Pressure.Value, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
+    AbsorptionChiller.Absorber.Circle.X = map(AbsorptionChiller.Absorber.Temperature.Value, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
 
-    AbsorptionChiller.GeneratorInput.Presion = 16;
-    AbsorptionChiller.GeneratorInput.Composicion = AbsorptionChiller.Absorber.Composicion;
-    AbsorptionChiller.GeneratorInput.Temperatura = AqNH3.VaporTemperature(AbsorptionChiller.GeneratorInput.Presion, AbsorptionChiller.GeneratorInput.Composicion);
-    AbsorptionChiller.GeneratorInput.Circle.Y = map(AbsorptionChiller.GeneratorInput.Presion, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin, true);
-    AbsorptionChiller.GeneratorInput.Circle.X = map(AbsorptionChiller.GeneratorInput.Temperatura, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax, true);
+    AbsorptionChiller.GeneratorInput.Pressure.Value = 16;
+    AbsorptionChiller.GeneratorInput.Composition[0] = AbsorptionChiller.Absorber.Composition[0];
+    AbsorptionChiller.GeneratorInput.Composition[1] = AbsorptionChiller.Absorber.Composition[1];
+    AbsorptionChiller.GeneratorInput.Temperature.Value = AqNH3.VaporTemperature(AbsorptionChiller.GeneratorInput.Pressure.Value, AbsorptionChiller.GeneratorInput.Composition[0]);
+    AbsorptionChiller.GeneratorInput.Circle.Y = map(AbsorptionChiller.GeneratorInput.Pressure.Value, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin, true);
+    AbsorptionChiller.GeneratorInput.Circle.X = map(AbsorptionChiller.GeneratorInput.Temperature.Value, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax, true);
 
-    AbsorptionChiller.AbsorberInput.Presion = AbsorptionChiller.Evaporator.Presion;
-    AbsorptionChiller.AbsorberInput.Composicion = AbsorptionChiller.Generator.Composicion;
-    AbsorptionChiller.AbsorberInput.Temperatura = AqNH3.VaporTemperature(AbsorptionChiller.AbsorberInput.Presion, AbsorptionChiller.AbsorberInput.Composicion);
-    AbsorptionChiller.AbsorberInput.Circle.Y = map(AbsorptionChiller.AbsorberInput.Presion, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
-    AbsorptionChiller.AbsorberInput.Circle.X = map(AbsorptionChiller.AbsorberInput.Temperatura, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
+    AbsorptionChiller.AbsorberInput.Pressure.Value = AbsorptionChiller.Evaporator.Pressure.Value;
+    AbsorptionChiller.AbsorberInput.Composition[0] = AbsorptionChiller.Generator.Composition[0];
+    AbsorptionChiller.AbsorberInput.Composition[1] = AbsorptionChiller.Generator.Composition[1];
+    AbsorptionChiller.AbsorberInput.Temperature.Value = AqNH3.VaporTemperature(AbsorptionChiller.AbsorberInput.Pressure.Value, AbsorptionChiller.AbsorberInput.Composition[0]);
+    AbsorptionChiller.AbsorberInput.Circle.Y = map(AbsorptionChiller.AbsorberInput.Pressure.Value, Screen.pressMin, Screen.pressMax, Screen.Ymax, Screen.Ymin,true);
+    AbsorptionChiller.AbsorberInput.Circle.X = map(AbsorptionChiller.AbsorberInput.Temperature.Value, Screen.tempMin, Screen.tempMax, Screen.Xmin, Screen.Xmax,true);
 }

@@ -78,6 +78,7 @@ function FindClosestPositions(ValueX, ArrayX){
     // Find the two positions, closer to the element in the array.
     // The x function must be an ever-growing function. (We will be using a binary search)
     // Duplicated values of ArrayX will cause an error.
+    if(ValueX < ArrayX[0]){return [0,1]}
     let Initial = 0;
     let Final = ArrayX.length - 1;
     let RangeOfTheBinarySearch = Final;
